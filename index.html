@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Chatbot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+      margin: 0;
+    }
+
+    .chat-container {
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      padding: 20px;
+    }
+
+    .chatbox {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .chatlogs {
+      margin-bottom: 10px;
+    }
+
+    .chatlogs .user-message, .chatlogs .bot-message {
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 10px;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+
+    .user-message {
+      background-color: #4caf50;
+      color: white;
+      align-self: flex-end;
+    }
+
+    .bot-message {
+      background-color: #e4e4e4;
+      color: black;
+      align-self: flex-start;
+    }
+
+    input {
+      width: 80%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-right: 10px;
+    }
+
+    button {
+      padding: 10px 15px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div id="chatbox" class="chatbox">
+      <div id="chatlogs" class="chatlogs"></div>
+    </div>
+    <input id="userInput" type="text" placeholder="Type a message..." />
+    <button id="sendButton">Send</button>
+  </div>
+
+  <script>
+    document.getElementById('sendButton').addEventListener('click', sendMessage);
+    document.getElementById('userInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+
+    function sendMessage() {
+      const userInput = document.getElementById('userInput').value.trim();
+      
+      if (userInput !== '') {
+        appendMessage(userInput, 'user');
+        document.getElementById('userInput').value = ''; // Clear input field
+        setTimeout(() => {
+          const botResponse = getBotResponse(userInput);
+          appendMessage(botResponse, 'bot');
+        }, 1000); // Simulate a slight delay for the bot
+      }
+    }
+
+    function appendMessage(message, sender) {
+      const chatlogs = document.getElementById('chatlogs');
+      const messageDiv = document.createElement('div');
+      messageDiv.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
+      messageDiv.textContent = message;
+      chatlogs.appendChild(messageDiv);
+      
+      // Scroll to the bottom of the chat
+      chatlogs.scrollTop = chatlogs.scrollHeight;
+    }
+
+    function getBotResponse(userInput) {
+      // You can expand this with more sophisticated responses or connect to an AI API
+      const responses = {
+        'hi': 'Hello! How can I assist you today?',
+        'how are you': 'I am just a bot, but I am doing great! How about you?',
+        'bye': 'Goodbye! Have a great day!',
+        'default': 'I\'m not sure how to respond to that. Can you ask something else?'
+          };
+
+      return responses[userInput.toLowerCase()] || responses['default'];
+    }
+  </script>
+</body>
+</html>
